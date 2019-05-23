@@ -1,0 +1,120 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="components/component-circle.html">
+
+<link rel="stylesheet" href="../../assets/payments-app.css">
+
+<dom-module id="payments-app">
+    <template>
+    <style>
+      :host {
+        display: block;
+        --btn-color: #004581;
+        --btn-text-color: #ffffff;
+      }
+      paper-button {
+        background: var(--btn-color);
+        color: var(--btn-text-color);
+        display: flex;
+      }
+    </style>
+    <h4><b>IMPORTE </b><i>(2 de 3)</i></h4>
+    <h5>Saldo $[[accountBalance]]</h5>
+
+    <template is="dom-if" if="{{getAlertMinAmount(accountBalance)}}">
+      La cuenta seleccionada no permite realizar una donación mayor a $[[accountBalance]]
+    </template><br>
+
+    <dom-repeat items="[[dataAmounts]]" as="item">
+        <template>
+        <component-circle amount="[[item.amount]]" active="[[item.active]]" pressed="[[item.pressed]]" on-event-amount="selectAmount" id$='[[item.amount]]' on-click="select"></component-circle>
+      </template>
+    </dom-repeat>
+
+    <paper-input label="Otro importe" auto-validate pattern="[0-9]*"></paper-input>
+    <label class="alert">[[alert]]</label>
+
+    <paper-button raised class="custom" on-click="sendAmount">Continuar</paper-button>
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class PaymentsApp extends Polymer.Element {
+            static get is() {
+                return 'payments-app';
+            }
+            static get properties() {
+                return {
+                    dataAmounts: {
+                        type: Array,
+                        value: [{
+                            amount: 25,
+                            active: false,
+                            pressed: true
+                        }, {
+                            amount: 50,
+                            active: false,
+                            pressed: false
+                        }, {
+                            amount: 100,
+                            active: false,
+                            pressed: false
+                        }, {
+                            amount: 200,
+                            active: false,
+                            pressed: false
+                        }]
+                    },
+                    amount: {
+                        type: String,
+                        value: 0
+                    },
+                    accountBalance: {
+                        type: String,
+                        value: 100
+                    }
+
+                };
+            }
+
+            ready() {
+                super.ready();
+                this.dataAmounts.forEach(elem => {
+                    elem.active = (this.accountBalance >= elem.amount) ? true : false;
+                });
+            }
+
+            selectAmount(e) {
+                const amount = e.detail;
+                this.set('amount', amount);
+            }
+            sendAmount() {
+                console.log(this.amount);
+            }
+
+            getAlertMinAmount(accountBalance) {
+                if (accountBalance < this.dataAmounts[3].amount) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+            //
+
+            select(e) {
+                console.log(e.target.id);
+            }
+        }
+
+        window.customElements.define(PaymentsApp.is, PaymentsApp);
+    </script>
+</dom-module>

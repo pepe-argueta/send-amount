@@ -1,0 +1,6 @@
+{
+  "name": "payments",
+  "short_name": "payments",
+  "start_url": "/",
+  "display": "standalone"
+}
