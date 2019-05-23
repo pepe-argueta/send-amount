@@ -55,7 +55,7 @@
       }
     </style>
     <template is="dom-if" if="{{active}}">
-      <div class="circle" on-click="selected" on-component-circle="eventAmount">
+      <div class="circle">
         <div class="amount">$[[amount]]</div>
       </div>
     </template>
@@ -84,25 +84,14 @@
                 return 'component-circle';
             }
             static get properties() {
-                    return {
-                        amount: {
-                            type: Number,
-                        },
-                        pressed: {
-                            type: Boolean,
-                            notify: true,
-                            reflectToAttribute: true,
-                        }
-                    };
-                }
-                /* selected() {
-                    this.pressed = !this.pressed;
-                    let action = this.dispatchEvent(new CustomEvent('event-amount', {
-                        detail: this.amount,
-                        bubbles: true,
-                        composed: true
-                    }));
-                } */
+                return {
+                    pressed: {
+                        type: Boolean,
+                        notify: true,
+                        reflectToAttribute: true,
+                    }
+                };
+            }
         }
 
         window.customElements.define(ComponentCircle.is, ComponentCircle);

@@ -32,7 +32,7 @@
 
     <dom-repeat items="[[dataAmounts]]" as="item">
         <template>
-        <component-circle amount="[[item.amount]]" active="[[item.active]]" pressed="[[item.pressed]]" on-event-amount="selectAmount" id$='[[item.amount]]' on-click="select"></component-circle>
+        <component-circle amount="[[item.amount]]" active="[[item.active]]" pressed="[[item.pressed]]" id$='[[item.amount]]' on-click="select"></component-circle>
       </template>
     </dom-repeat>
 
@@ -58,7 +58,7 @@
                         value: [{
                             amount: 25,
                             active: false,
-                            pressed: true
+                            pressed: false
                         }, {
                             amount: 50,
                             active: false,
@@ -92,14 +92,27 @@
                 });
             }
 
-            selectAmount(e) {
-                const amount = e.detail;
-                this.set('amount', amount);
+            select(e) {
+
+                const key = e.target.id;
+                this.set('amount', key);
+
+                const keysDataAmounts = Object.keys(this.dataAmounts);
+
+                keysDataAmounts.forEach(elem => {
+                    if (this.dataAmounts[elem].amount == key) {
+                        this.set(`dataAmounts.${elem}.pressed`, true);
+                    } else {
+                        this.set(`dataAmounts.${elem}.pressed`, false);
+                    }
+                });
             }
+
             sendAmount() {
                 console.log(this.amount);
             }
 
+            //Muestra Alerta min de Saldo
             getAlertMinAmount(accountBalance) {
                 if (accountBalance < this.dataAmounts[3].amount) {
                     return true;
@@ -108,11 +121,6 @@
                 }
             }
 
-            //
-
-            select(e) {
-                console.log(e.target.id);
-            }
         }
 
         window.customElements.define(PaymentsApp.is, PaymentsApp);
