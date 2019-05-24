@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="component-circle">
-    <template>
+  <template>
     <style>
       :host {
         display: inline-block;
@@ -11,12 +11,13 @@
         --amount-text: #004581;
         --amount-pressed-text: #F4F4F4;
         --amount-text-disabled: #bebcbc;
+        --size-circle:50px;
       }
       .circle::after {
         content: "";
         display: block;
-        width: 70px;
-        height:70px;
+        width: var(--size-circle);
+        height: var(--size-circle);
         background: var(--amount-color);
         -moz-border-radius: 50%; 
         -webkit-border-radius: 50%; 
@@ -34,8 +35,8 @@
       :host([pressed]) .circle::after {
         content: "";
         display: block;
-        width: 70px;
-        height:70px;
+        width: var(--size-circle);
+        height: var(--size-circle);
         background: var(--amount-pressed-color);
         -moz-border-radius: 50%; 
         -webkit-border-radius: 50%; 
@@ -55,7 +56,7 @@
       }
     </style>
     <template is="dom-if" if="{{active}}">
-      <div class="circle">
+      <div class="circle" >
         <div class="amount">$[[amount]]</div>
       </div>
     </template>
@@ -65,35 +66,31 @@
         <div class="amount disabled">$[[amount]]</div>
       </div>
     </template>
+  </template>
+  <script>
+    /**
+     * `component-circle`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ComponentCircle extends Polymer.Element {
+      static get is() {
+        return 'component-circle';
+      }
+      static get properties() {
+        return {
+          pressed: {
+            type: Boolean,
+            notify: true,
+            reflectToAttribute: true,
+          }
+        };
+      }
+    }
 
-
-
-    </template>
-
-    <script>
-        /**
-         * `component-circle`
-         * 
-         *
-         * @customElement
-         * @polymer
-         * @demo demo/index.html
-         */
-        class ComponentCircle extends Polymer.Element {
-            static get is() {
-                return 'component-circle';
-            }
-            static get properties() {
-                return {
-                    pressed: {
-                        type: Boolean,
-                        notify: true,
-                        reflectToAttribute: true,
-                    }
-                };
-            }
-        }
-
-        window.customElements.define(ComponentCircle.is, ComponentCircle);
+    window.customElements.define(ComponentCircle.is, ComponentCircle);
     </script>
 </dom-module>

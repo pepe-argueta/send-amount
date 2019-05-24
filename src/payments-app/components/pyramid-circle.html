@@ -1,61 +1,12 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="components/component-circle.html">
 
-<dom-module id="payments-app">
+<dom-module id="pyramid-circle">
   <template>
     <style>
-      :host {
-        display: block;
-        --btn-color: #004581;
-        --btn-text-color: #ffffff;
-        --icon-help-color: #004581;
-        --icon-problem-color: #E77C8E;
-        --box-color-problem: #EFE1E1;
-      }
-      paper-button {
-        background: var(--btn-color);
-        color: var(--btn-text-color);
-        display: flex;
-      }
-      .flex-alert-amount {
-        background: var(--box-color-problem);
-        @apply --layout-horizontal;
-        height: 8em;
-        margin-bottom: 2em;
-      }
-      .flex-icon {
-        @apply --layout-flex;
-        position: fixed;
-      }
-      .flex-message {
-        @apply --layout-center;
-        padding: 2em; 
-      }
-      .icon-help {
-        width: 20px;
-        top: -3px;
-        color: var(--icon-help-color);
-        left: 10px;
-      }
-      .icon-problem {
-        width: 40px;
-        color: var(--icon-problem-color);
-      }
-
-      /*CCS Piramide*/
-
-      .box-pyramid {
-        @apply --layout-flex;
-        margin-bottom: 10px;
-      }
 
       .pyramid .block{
         text-align: center;
@@ -79,33 +30,9 @@
           margin-left: 10%;
       }
 
-      .box-input-amount {
-        display: flex;
-        margin: 1%;
-        margin-bottom: 5px;
-      }
-
     </style>
-    <h4><b>IMPORTE </b><i>(2 de 3)</i></h4>
-    <h5>Saldo $[[accountBalance]]</h5>
+    <h2>Piramide</h2>
 
-    <div class="container">
-      <article>
-
-        <section>
-          <template is="dom-if" if="{{getAlertMinAmount(accountBalance)}}">
-            <div class="flex-alert-amount">
-              <div class="flex-icon">
-                <iron-icon class="icon-problem" icon="{{alertsAmount.0.icon}}"></iron-icon>
-              </div>
-              <div class="flex-message">
-                <span>{{alertsAmount.0.msg}}[[accountBalance]]</span>
-              </div>
-            </div>
-          </template>
-        </section><!--End Section alert min amount-->
-
-        <section class="flex-pyramid">
           <div class="pyramid">
             <div class="row row1">
               <dom-repeat items="[[dataAmounts]]" filter="getRow1" as="item">
@@ -152,32 +79,12 @@
           </div>
         </section><!--End Section pyramid-->
 
-        <section class="flex-input-amount">
-          <div>
-            <paper-input type="number" name="inputAmount" value="{{inputAmount::input}}" max="10000" label="Otro importe" auto-validate pattern="[0-9]"></paper-input>
-          </div><!--End input amount-->
-          <template is="dom-if" if="{{getAlertSendAmount(alertsAmount.1.icon)}}">
-            <label class="alert">{{alertsAmount.1.msg}}. <iron-icon class="icon-help" icon="{{alertsAmount.1.icon}}"></iron-icon></label>
-          </template>
         
-          <template is="dom-if" if="{{!getAlertSendAmount(alertsAmount.1.icon)}}">
-            <iron-icon class="icon-problem" icon="{{alertsAmount.1.icon}}"></iron-icon>
-            <label class="alert">{{alertsAmount.1.msg}}.</label>
-           </template>
-        </section>
-      
-        </article>
-     
-
-    </div><!--End container-->
    
 
     
 
     
-    
-
-    <!-- <paper-button raised class="custom" on-click="sendAmount">Continuar</paper-button> -->
   </template>
 
   <script>
@@ -185,10 +92,10 @@
     * @customElement
     * @polymer
     */
-    class PaymentsApp extends Polymer.Element {
+    class PyramidCircle extends Polymer.Element {
 
       static get is() {
-        return 'payments-app';
+        return 'pyramid-circle';
       }
       
       static get properties() {   
@@ -341,6 +248,6 @@
       }
     }
 
-    window.customElements.define(PaymentsApp.is, PaymentsApp);
+    window.customElements.define(PyramidCircle.is, PyramidCircle);
   </script>
 </dom-module>
