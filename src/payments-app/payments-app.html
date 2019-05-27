@@ -13,47 +13,87 @@
   <template>
     <style>
       :host {
-        display: block;
+        --alert-problem-background: #FDEFEF;
+        --alert-problem-icon: #E77C8E;
+        --alert-insuf-color: #E77C8E;
+        --alert-help-icon: #1B72B8;
+
         --btn-color: #004581;
         --btn-text-color: #ffffff;
-        --icon-help-color: #004581;
-        --icon-problem-color: #E77C8E;
-        --box-color-problem: #EFE1E1;
       }
-      paper-button {
-        background: var(--btn-color);
-        color: var(--btn-text-color);
-        display: flex;
+
+      .boxes article {
+        display: block;
+        width: 100%;
       }
-      .flex-alert-amount {
-        background: var(--box-color-problem);
-        @apply --layout-horizontal;
-        height: 8em;
-        margin-bottom: 2em;
+
+      .boxes {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
       }
-      .flex-icon {
-        @apply --layout-flex;
-        position: fixed;
+
+      .boxes article {
+        grid-column: 1;
       }
-      .flex-message {
-        @apply --layout-center;
-        padding: 2em; 
+
+      .box-alert {
+        padding: 20px;
+        background-color: var(--alert-problem-background);
+        color: #000000;
+        margin-bottom: 15px;
       }
+
+      .icon-problem {
+        color: var(--alert-problem-icon);
+        display: flex; 
+        margin-bottom: 15px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 2.2em !important;
+        height: 2.2em !important;
+      }
+
+      .icon-insuf {
+        color: var(--alert-problem-icon);
+        display: inline-flex; 
+        width: 2.2em !important;
+        height: 2.2em !important;
+        margin-right: 10px;
+        margin-top: -5px;
+      }
+
       .icon-help {
         width: 20px;
         top: -3px;
-        color: var(--icon-help-color);
+        color: var(--alert-help-icon);
         left: 10px;
       }
-      .icon-problem {
-        width: 40px;
-        color: var(--icon-problem-color);
+
+      .text-problem {
+        display: flex;
+        text-align: justify;
+        font-size: 1.2em;
+        margin-right: 7px;
+        margin-left: 7px;
+        margin-bottom: 10px;
       }
 
-      /*CCS Piramide*/
+      .text-insuf {
+        color: var(--alert-insuf-color);
+        display: flex;
+        text-align: justify;
+        font-size: 1em;
+        margin-right: 20px;
+        margin-left: 7px;
+        margin-bottom: 10px;
+      }
 
-      .box-pyramid {
-        @apply --layout-flex;
+      .text-help {
+        display: flex;
+        text-align: justify;
+        font-size: 1em;
+        margin-right: 20px;
+        margin-left: 7px;
         margin-bottom: 10px;
       }
 
@@ -79,33 +119,32 @@
           margin-left: 10%;
       }
 
-      .box-input-amount {
+      .send-amount {
+        margin-top: 30px;
+        background: var(--btn-color);
+        color: var(--btn-text-color);
         display: flex;
-        margin: 1%;
-        margin-bottom: 5px;
       }
 
     </style>
-    <h4><b>IMPORTE </b><i>(2 de 3)</i></h4>
-    <h5>Saldo $[[accountBalance]]</h5>
 
-    <div class="container">
-      <article>
+      <section class="boxes">
 
-        <section>
-          <template is="dom-if" if="{{getAlertMinAmount(accountBalance)}}">
-            <div class="flex-alert-amount">
-              <div class="flex-icon">
-                <iron-icon class="icon-problem" icon="{{alertsAmount.0.icon}}"></iron-icon>
-              </div>
-              <div class="flex-message">
-                <span>{{alertsAmount.0.msg}}[[accountBalance]]</span>
-              </div>
+        <article>
+          <h4><b>IMPORTE </b><i>(2 de 3)</i></h4>
+          <h5>Saldo $[[accountBalance]]</h5>
+        </article>
+
+        <article>
+          <template is="dom-if" if="{{getAlertMinAmount(accountBalance)}}">  
+            <div class="box-alert">
+              <iron-icon class="icon-problem" icon="{{alertsAmount.0.icon}}"></iron-icon>
+              <span class="text-problem">{{alertsAmount.0.msg}}[[accountBalance]]</span>
             </div>
           </template>
-        </section><!--End Section alert min amount-->
+        </article>
 
-        <section class="flex-pyramid">
+        <article>
           <div class="pyramid">
             <div class="row row1">
               <dom-repeat items="[[dataAmounts]]" filter="getRow1" as="item">
@@ -149,35 +188,32 @@
                 </template>
               </dom-repeat>
             </div>
-          </div>
-        </section><!--End Section pyramid-->
-
-        <section class="flex-input-amount">
-          <div>
-            <paper-input type="number" name="inputAmount" value="{{inputAmount::input}}" max="10000" label="Otro importe" auto-validate pattern="[0-9]"></paper-input>
-          </div><!--End input amount-->
-          <template is="dom-if" if="{{getAlertSendAmount(alertsAmount.1.icon)}}">
-            <label class="alert">{{alertsAmount.1.msg}}. <iron-icon class="icon-help" icon="{{alertsAmount.1.icon}}"></iron-icon></label>
-          </template>
-        
-          <template is="dom-if" if="{{!getAlertSendAmount(alertsAmount.1.icon)}}">
-            <iron-icon class="icon-problem" icon="{{alertsAmount.1.icon}}"></iron-icon>
-            <label class="alert">{{alertsAmount.1.msg}}.</label>
-           </template>
-        </section>
-      
+          </div> 
         </article>
-     
 
-    </div><!--End container-->
-   
+        <article>
+          <paper-input type="number" name="inputAmount" value="{{inputAmount::input}}" max="10000" label="Otro importe" auto-validate pattern="[0-9]"></paper-input>
+        </article>
 
+        <article>
+          <template is="dom-if" if="{{getAlertSendAmount(alertsAmount.1.icon)}}">
+            <label class="text-help">{{alertsAmount.1.msg}}. <iron-icon class="icon-help" icon="{{alertsAmount.1.icon}}"></iron-icon></label>
+          </template>
+      
+          <template is="dom-if" if="{{!getAlertSendAmount(alertsAmount.1.icon)}}">
+            <label class="text-insuf">
+              <iron-icon class="icon-insuf" icon="{{alertsAmount.1.icon}}"></iron-icon>
+              {{alertsAmount.1.msg}}.
+            </label>
+          </template>
+        </article>
+
+        <article>
+          <paper-button class="send-amount" raised class="custom" on-click="sendAmount">Continuar</paper-button>
+        </article>
+
+      </section>
     
-
-    
-    
-
-    <!-- <paper-button raised class="custom" on-click="sendAmount">Continuar</paper-button> -->
   </template>
 
   <script>
@@ -239,7 +275,7 @@
           },
           accountBalance: {
             type: String,
-            value: 10
+            value: 100
           },
           inputAmount: {
             type: String,
