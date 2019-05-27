@@ -6,53 +6,35 @@
     <style>
       :host {
         display: inline-block;
-        --amount-color: #F4F4F4;;
-        --amount-pressed-color: #004581;
-        --amount-text: #004581;
-        --amount-pressed-text: #F4F4F4;
-        --amount-text-disabled: #bebcbc;
-        --size-circle:50px;
+        --circle-backgroud: #F4F4F4;
+        --circle-pressed-backgroud: #004581;
+        --circle-color: #004581;
+        --circle-pressed-color: #F4F4F4;
+        --circle-size : 70px;
+        --circle-disabled: #000000;
       }
-      .circle::after {
-        content: "";
-        display: block;
-        width: var(--size-circle);
-        height: var(--size-circle);
-        background: var(--amount-color);
-        -moz-border-radius: 50%; 
-        -webkit-border-radius: 50%; 
-        border-radius: 50%;
+      .circle {
+        display: flex;
+        background-color: var(--circle-backgroud);
+        color: var(--circle-color);
+        margin: 10px;
+        height: var(--circle-size);
+        width: var(--circle-size);
+        border-radius: 35px;
+        
       }
-      .amount {
-        float:left;
-        width:100%;
-        padding-top:50%;
-        line-height:1em;
-        margin-top:-0.5em;
-        text-align:center;
-        color:var(--amount-text);
+      :host([pressed]) .circle {
+        display: flex;
+        background-color: var(--circle-pressed-backgroud);
+        color: var(--circle-pressed-color);
+        margin: 10px;
+        height: var(--circle-size);
+        width: var(--circle-size);
+        border-radius: 35px;  
       }
-      :host([pressed]) .circle::after {
-        content: "";
-        display: block;
-        width: var(--size-circle);
-        height: var(--size-circle);
-        background: var(--amount-pressed-color);
-        -moz-border-radius: 50%; 
-        -webkit-border-radius: 50%; 
-        border-radius: 50%;
-      } 
-      :host([pressed]) .amount {
-        float:left;
-        width:100%;
-        padding-top:50%;
-        line-height:1em;
-        margin-top:-0.5em;
-        text-align:center;
-        color:var(--amount-pressed-text);
-      }
-      .disabled {
-        color: var(--amount-text-disabled);
+      .circle, .amount {
+        flex-direction: column;
+        justify-content: center;
       }
     </style>
     <template is="dom-if" if="{{active}}">

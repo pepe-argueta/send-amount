@@ -17,22 +17,47 @@
         --alert-problem-icon: #E77C8E;
         --alert-insuf-color: #E77C8E;
         --alert-help-icon: #1B72B8;
-
         --btn-color: #004581;
         --btn-text-color: #ffffff;
+        --box-confirm-background: #004581;
+        --box-confirm-ceja-background: #072145;
+        --box-confirm-color: #ffffff;
       }
 
-      .boxes article {
+      .box-confirm-amount {
+        visibility:hidden;
         display: block;
+        left: 0px;
+        position: absolute;
+        top: -20px;
         width: 100%;
       }
 
-      .boxes {
+      .box-confirm-ceja {
+        background-color: var(--box-confirm-ceja-background);
+        height: 20px;
+      }
+
+      .box-confirm {
+        background-color: var(--box-confirm-background);
+        color: var(--box-confirm-color);
+        min-height: 100px;      
+      }
+
+      
+
+      .boxes-amount article {
+        display: block;
+        width: 100%;
+        
+      }
+
+      .boxes-amount {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
       }
 
-      .boxes article {
+      .boxes-amount article {
         grid-column: 1;
       }
 
@@ -128,18 +153,18 @@
 
     </style>
 
-      <section class="boxes">
+      <section class="boxes-amount">
 
         <article>
           <h4><b>IMPORTE </b><i>(2 de 3)</i></h4>
-          <h5>Saldo $[[accountBalance]]</h5>
+          <h5>Money $[[money]]</h5>
         </article>
 
         <article>
-          <template is="dom-if" if="{{getAlertMinAmount(accountBalance)}}">  
+          <template is="dom-if" if="{{getAlertMinAmount(money)}}">  
             <div class="box-alert">
               <iron-icon class="icon-problem" icon="{{alertsAmount.0.icon}}"></iron-icon>
-              <span class="text-problem">{{alertsAmount.0.msg}}[[accountBalance]]</span>
+              <span class="text-problem">{{alertsAmount.0.msg}}[[money]]</span>
             </div>
           </template>
         </article>
@@ -213,6 +238,32 @@
         </article>
 
       </section>
+
+      <section class="box-confirm-amount">
+        
+        <article>
+          <div class="box-confim-ceja">3</div>
+          <div class="box-confirm">
+            <h3>IMPORTE</h3>
+            <span>Cambiar</span>
+            <strong>[[amount]]</strong>
+          </div>
+          <div class="box-confirm-button">
+            <h4><b>IMPORTE </b><i>(3 de 3)</i></h4>
+          </div>
+        </article>
+
+        <article>
+          
+        </article>
+
+      </section>
+
+      <div>
+        <h1>Disable me</h1>
+        <button>Hi</button>
+        <input type="number" name="" placeholder="Hi there">
+      </div>
     
   </template>
 
@@ -273,7 +324,7 @@
             type: String,
             value: 0
           },
-          accountBalance: {
+          money: {
             type: String,
             value: 100
           },
@@ -300,7 +351,7 @@
       ready() {
         super.ready();
         this.dataAmounts.forEach(data => {
-          data.active = (this.accountBalance >= data.amount) ? true : false;
+          data.active = (this.money >= data.amount) ? true : false;
         });
       }
 
@@ -350,16 +401,18 @@
       }
 
       sendAmount() {
-        if(this.amount <= this.accountBalance) {
+        if(this.amount <= this.money) {
           console.log(this.amount);
+          this.shadowRoot.querySelector('.boxes-amount').style.visibility = 'hidden';
+          this.shadowRoot.querySelector('.box-confirm-amount').style.visibility = 'visible';
         } else {
-          this.set(`alertsAmount.1.msg`, `Saldo insuficiente. Ingresa un importe menor o igual a tu saldo de $${this.accountBalance}`);
+          this.set(`alertsAmount.1.msg`, `Saldo insuficiente. Ingresa un importe menor o igual a tu saldo de $${this.money}`);
           this.set(`alertsAmount.1.icon`, 'report-problem');
         }
       }
 
-      getAlertMinAmount(accountBalance) {
-        if (accountBalance < this.dataAmounts[3].amount) {
+      getAlertMinAmount(money) {
+        if (money < this.dataAmounts[3].amount) {
           return true;
         } else {
           return false;
