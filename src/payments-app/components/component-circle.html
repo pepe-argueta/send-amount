@@ -12,12 +12,12 @@
         --circle-pressed-color: #F4F4F4;
         --circle-size : 70px;
         --circle-disabled: #000000;
+        margin: 5px;
       }
       .circle {
         display: flex;
         background-color: var(--circle-backgroud);
         color: var(--circle-color);
-        margin: 10px;
         height: var(--circle-size);
         width: var(--circle-size);
         border-radius: 35px;
@@ -27,7 +27,6 @@
         display: flex;
         background-color: var(--circle-pressed-backgroud);
         color: var(--circle-pressed-color);
-        margin: 10px;
         height: var(--circle-size);
         width: var(--circle-size);
         border-radius: 35px;  
@@ -35,19 +34,14 @@
       .circle, .amount {
         flex-direction: column;
         justify-content: center;
+        margin: 0 auto;
       }
+      
+      
     </style>
-    <template is="dom-if" if="{{active}}">
-      <div class="circle" >
-        <div class="amount">$[[amount]]</div>
-      </div>
-    </template>
-
-    <template is="dom-if" if="{{!active}}">
-      <div class="circle">
-        <div class="amount disabled">$[[amount]]</div>
-      </div>
-    </template>
+    <div class="circle" >
+      <div class="amount">$[[amount]]</div>
+    </div>
   </template>
   <script>
     /**
